@@ -1,0 +1,14 @@
+div {
+  width: 300px;
+  height: 300px;
+  outline: 3px solid black;
+  float: left;
+  font-size: 8rem;
+  text-align: center;
+}
+
+#winning {
+  width: 500px;
+  height: 100px;
+  margin-left: 200px;
+}
