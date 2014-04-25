@@ -32,17 +32,16 @@ $(document).ready( function() {
     });
 
     function checksum(player) {
-      // var sum = 0;
-      // for (var i = 0; i < 3; i++) {
-      //   var sum = player[i];
+      // for (var i = 0; i < player.length; i++) {
+      //   var sum = player[i]+player[i+1]+player[i+2]
       // };
       var sum = 0;
-      for (var i in player) {
+      // for (var i in player) {
         sum += player[0];
         sum += player[1];
         sum += player[2];
-      }
-      if (sum == 15) { return true };
+      // }
+      if (sum == 15) { return true }
     }
 
     function winning(player) {
