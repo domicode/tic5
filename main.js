@@ -1,15 +1,4 @@
-// function mark(target) {
-//   target.innerHTML = "X"
-// }
-
-// var target = $(".line1.row1")[0]
-
-// mark(target);
-
 $(document).ready( function() {
-    // $(".box").click(function(event) {
-    //   event.currentTarget.innerHTML = "X";
-    // }); 
 
     var turn = 1
 
@@ -20,37 +9,38 @@ $(document).ready( function() {
       if (event.currentTarget.innerHTML == "") {
         if (turn % 2 == 0) {
           event.currentTarget.innerHTML = "x";
-          player1.push(parseInt(event.currentTarget.id));
-          winning(player1);
+          player2.push(parseInt(event.currentTarget.id));
+          winning(player2, "Player 2");
         } else {
           event.currentTarget.innerHTML = "o";
-          player2.push(parseInt(event.currentTarget.id));
-          winning(player2);
+          player1.push(parseInt(event.currentTarget.id));
+          winning(player1, "Player 1");
         }
         turn += 1
       }
     });
 
     function checksum(player) {
-      // for (var i = 0; i < player.length; i++) {
-      //   var sum = player[i]+player[i+1]+player[i+2]
-      // };
-      var sum = 0;
-      // for (var i in player) {
-        sum += player[0];
-        sum += player[1];
-        sum += player[2];
-      // }
-      if (sum == 15) { return true }
+      for (var i = 0; i < player.length; i++) {
+          for (var j = i + 1; j < player.length; j++) {
+              for (var k = j + 1; k < player.length; k++) {
+                  if (player[i] + player[j] + player[k] == 15) {
+                      return true;
+                  }
+              }
+          }
+      }
     }
 
-    function winning(player) {
+
+
+    function winning(player, name) {
       console.log(player)
       console.log(checksum(player))
       if (player.length >= 3) {
         console.log(checksum(player))
         if (checksum(player)) {
-          $("#winning").html("You won the game");
+          $("#winning").html("You won the game " + name);
         }
       }
     }
