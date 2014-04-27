@@ -4,102 +4,121 @@ $(document).ready( function() {
 
     var player1 = [];
     var player2 = [];
-  
+
+
+
+    
     $(".box").click(function(event) {
+      $(".gametype").click(function(event) {
+        $(this).attr("value", "2 player game")
+      })
       if (event.currentTarget.innerHTML == "") {
-          event.currentTarget.innerHTML = "x";
+          $(this).html("x").addClass("player2")
           player2.push(parseInt(event.currentTarget.id));
           winning(player2, "Player 2");
-          var computerselect = computer();
-          $(computerselect).html("o");
-          console.log("Computer choice"+player1)
+          var computerselect = computerTurn();
+          $(computerselect).html("o").addClass("player1");
           winning(player1, "Computer");
       }
     });
 
-    function computer() {
+
+    function computerTurn() {
       var select = "";
       if ((player2[0] == 5)&& player2.length == 1) {
-        select = "#8";
-        player1.push(8)
+        select = 8;
       } else if (player2.length == 1) {
-        select = "#5";
-        player1.push(5)
+        select = 5;
       } else {
-        // var select = selectfield(player2);
-        var select = selectField();
+        select = selectField();
       }
-      return select
+      player1.push(select)
+      return "#"+select
     }
 
 
     function  selectField() {
-      getFields(player1)
-      getFields(player2)
+      var selection = 0
+      if (getFields(player1) == 0) {
+        selection = getFields(player2)
+      } else selection = getFields(player1);
+      if (selection == 0) { 
+        selection = getAlternateField(player2);
+      }
+      return selection
     }
+
 
     function getFields(player) {
-      var values = [] 
-      for (var i = 0; i < player.length; i++) {
-          for (var j = i + 1; j < player.length; j++) {
-              values.push((player[i] + player[j]))         
-          }
-      }
-      return values
-    }
-
-
-
-    function selectfield(player) {
-      console.log("Player " + player)
-      var values = [] 
-      for (var i = 0; i < player.length; i++) {
-          for (var j = i + 1; j < player.length; j++) {
-              values.push((player[i] + player[j]))         
-          }
-      }
-      console.log("Values: "+values);
-      var selection = 0
-      for (var i = 0; i < values.length; i++) {
-        select = "#"+(15-values[i])
-        if (($(select).html() == "") && (values[i] < 15)) {
-          selection = 15 - values[i]
-          console.log("Values in the if statement:"+values[i])
-          console.log("Seleciton in the if statement:"+selection)
-        } else if (selection == 0) { selection = attack() }
-      };
-      console.log("Selection :" + selection);
-      select = "#" + selection;
-      player1.push(selection);
-      console.log("Select: "+select)
-      return select;
-    }
-
-    function attack() {
       var values = []
-      console.log("Player 1:ATTACK"+player1) 
-      for (var i = 0; i < player1.length; i++) {
-          for (var j = i + 1; j < player1.length; j++) {
-              values.push((player1[i] + player1[j]))         
+      for (var i = 0; i < player.length; i++) {
+          for (var j = i + 1; j < player.length; j++) {
+              values.push((player[i] + player[j]));         
           }
       }
-      var selection = parseInt($(".box:empty")[0].id);
+
+      var selection = 0 
       for (var i = 0; i < values.length; i++) {
-        select = "#"+(15-values[i])
+        select = "#"+(15-values[i]);
         if (($(select).html() == "") && (values[i] < 15)) {
-          selection = 15 - values[i]
+          selection = 15 - values[i];
         }
-      };
+      }
       return selection
-    };
+    }
+
+
+    function getAlternateField(player) {
+      var values = []
+      for (var i = 0; i < player.length; i++) {
+          for (var j = i + 1; j < player.length; j++) {
+              values.push((player[i] + player[j]));         
+          }
+      }
+
+      values.sort();
+      var selection = 0 
+      for (var i = 0; i < values.length; i++) {
+        var value = (values[i]*2).toString().split("");
+        value.reverse();
+        var id = parseInt(value[1])
+
+        // This is the better choice, would also work with the normal id
+        if (player.length > 2) {
+          id = id - 1
+        }
+
+        value = value[0];
+        value = parseInt(value);
+        select = "#"+(value);
+
+        if (value == 0) {
+          if (($(".box:empty").length) > id) {
+            selection = parseInt($(".box:empty")[id].id);
+          } else {
+            selection = parseInt($(".box:empty")[0].id);
+          }
+        }
+        if ((values[i] == 15)&&(Math.max.apply(Math, player) == 9)&&(player.length <= 2)) {
+          selection = 2;
+        }
+        if (($(select).html() == "")) {
+          selection = value;
+        }
+      }
+      return selection
+    }
 
 
 
-    function checksum(player) {
+    function checksumWin(player) {
       for (var i = 0; i < player.length; i++) {
           for (var j = i + 1; j < player.length; j++) {
               for (var k = j + 1; k < player.length; k++) {
                   if (player[i] + player[j] + player[k] == 15) {
+                      $("#"+player[i]).addClass("win")
+                      $("#"+player[j]).addClass("win")
+                      $("#"+player[k]).addClass("win")
                       return true;
                   }
               }
@@ -108,14 +127,16 @@ $(document).ready( function() {
     }
 
 
-
     function winning(player, name) {
-      console.log(player)
-      console.log(checksum(player))
+      if (player.length == 5) {
+        $("#winning").html("Nobody wins, play again").addClass("winning");
+        $(".box").off().addClass("disabled");
+      }
       if (player.length >= 3) {
-        console.log(checksum(player))
-        if (checksum(player)) {
-          $("#winning").html(name+ " won the game ");
+        if (checksumWin(player)) {
+          $("#winning").html(name+ " won the game").addClass("winning");
+          $(".box").off();
+          $(".box").not(".win").addClass("disabled");
         }
       }
     }

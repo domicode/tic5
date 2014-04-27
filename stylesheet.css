@@ -1,14 +1,145 @@
-div {
-  width: 300px;
-  height: 300px;
-  outline: 3px solid black;
+*, *:before, *:after {
+  -moz-box-sizing: border-box; 
+  -webkit-box-sizing: border-box; 
+  box-sizing: border-box;
+ }
+
+body {
+  font-family: "Century Gothic", Arial, sans-serif;
+/*  background: url(background.jpg) no-repeat center center fixed;
+  background-size: cover;*/
+}
+
+#gameboard {
+  width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#gameboard div {
+  width: 200px;
+  height: 200px;
   float: left;
   font-size: 8rem;
   text-align: center;
 }
 
-#winning {
-  width: 500px;
+.box {
+  width: 100px;
   height: 100px;
-  margin-left: 200px;
+  border: 3px solid black;
+  border-radius: 25px;
+  margin: 3px;
+  background: rgb(255,255,255);
+  opacity: 1;
+  z-index: 5;
+  transition: 0.7s;
+}
+
+.disabled {
+  opacity: 0.5;
+  z-index: 5;
+}
+
+/*.box:hover {
+  opacity: 1;
+  transition: 0.7s;
+}*/
+
+.row1 {
+  margin-left: 15px;
+}
+
+.row2{
+  margin-left: 20px;
+}
+
+.row3 {
+  margin-left: 25px;
+}
+
+/*#winning {
+  float: left;
+}*/
+
+.winning {
+  width: 400px;
+  height: auto;
+  border-radius: 25px;
+  background: rgba(255,255,255,0.8);
+  border: 3px solid black;
+  font-size: 3rem;
+  text-align: center;
+  color: black;
+  z-index: 2;
+  margin-left: 33.33%;
+  margin-top: 30px;
+  padding: 10px;
+  position: fixed;
+}
+
+#winning p {
+  top: 10px;
+  z-index: 1;
+  opacity: 1;
+}
+.player1 {
+  background: rgb(189,60,40);
+  transition: 0.7s;
+}
+
+.player2 {
+  background: rgb(30,60,180);
+  trasition: 0.7s;
+}
+
+.win {
+  background-color: green;
+  transition: 2s;
+}
+
+.newgame {
+  position: fixed;
+  width: 610px;
+  height: 100px;
+  border: none;
+  outline: none;
+  font-size: 3rem;
+  background: black;
+  color: white;
+  border-radius: 25px;
+  top: 266px;
+  right: -30px;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  transition: 1s;
+}
+
+/*.newgame:hover {
+  background: rgba(0,0,0,0.7);
+  color: green;
+  transition: 0.5s;
+}*/
+
+.gametype {
+  position: fixed;
+  width: 610px;
+  height: 100px;
+  border: none;
+  outline: none;
+  font-size: 3rem;
+  background: black;
+  color: white;
+  border-radius: 25px;
+  top: 266px;
+  left: -40px;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  transition: 1s;
 }
